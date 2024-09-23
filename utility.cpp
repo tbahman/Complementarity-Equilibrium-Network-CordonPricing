@@ -37,3 +37,58 @@ void ErrorAlloc(const char *message)
 // } /* ErrorAlloc */
 
 // /*************************************************************************************/
+/*********************************** READDEMAND **************************************/
+void READDEMAND(double DEMAND[])
+{
+	FILE *fp;
+	int od;
+	char
+		str[80]="",
+		demanddata[80]="DEMAND.DAT";
+
+	printf("\n ENTER THE NAME OF DATA FILE FOR THE DEMAND. THE DEFULT IS");
+	printf(" DEMAND.DAT \n");
+	/*scanf("%c",str);*/
+	
+	/*if (str[0]!='\n')
+	{
+		scanf("%s",&str[1]);
+		strcpy(demanddata,str);
+		scanf("%c",&str[0]);
+	}*/
+	
+	if ((fp=fopen(demanddata,"r"))==NULL) 
+	{
+		printf(" DATA FILE FOR DEMAND NOT FOUND ");
+		exit(1);
+	}
+
+	/*(fp=fopen(demanddata,"r"));*/
+
+	for (od=0; od<NODPRS && !feof(fp); ++od ) 
+	{
+		int org,dst;
+		double dem;
+		fscanf(fp," %d%d%lf ",&org,&dst,&dem);
+		ORGNODE[od]=org;
+		DSTNODE[od]=dst;               
+		DEMAND[od]=dem;
+		DSTNODE2[od]=dst;
+		totaldemand+=dem;
+	}
+	
+	if ( od<NODPRS || !feof(fp) ) 
+	{
+		printf("\n THERE MIGHT BE ERRORS IN READING NETWORK FILE \n");
+		printf(" DO YOU WANT TO EXIT ?(Y) ");scanf("%c",str);
+		if ((str[0]=='\n') || (*strupr(str)=='Y'))
+			exit(1);
+	}
+	else
+		printf("%s%s%s\n\n"," THE DEMAND FILE '",demanddata,"' WAS SUCCESSFULLY READ ");
+	fclose(fp);
+	return;
+
+} /* READDEMAND */
+
+/*************************************************************************************/
