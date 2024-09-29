@@ -204,3 +204,113 @@ void SAVEOUTPUT(double  *ta1, double fa1[], PATHPOINTER  *PATHstart, double  *DE
 } /* SAVEOUTPUT */
 
 /*************************************************************************************/
+/************************************ SAVEPRGINFO ************************************/
+void SAVEPRGINFO ( CYCLEINFOSTRUCT CYCLEinfo[], const PRGITRINFOSTRC *PRGITRinfo,
+				  const PRGMEMINFOSTRC *PRGMEMinfo, const PRGPATHINFOSTRC *PRGPTHinfo1, const PRGPATHINFOSTRC *PRGPTHinfo2)
+{
+	FILE
+		*fp;
+	char
+		str[150]="", prginfo[150]="PrginfoTAKMILI.DAT";
+	int
+		I,J;
+
+	char time[128], date[128];
+	
+	// Display operating system-style date and time. 
+	_strtime_s( time, 128 );
+	_strdate_s( date, 128 );
+	
+	/*printf("\n\n DO YOU WANT TO SAVE PROGRAM INFORMATION (press ENTER or Y for Yes)? ");
+	scanf("%c",str);
+	
+	if (str[0]!='\n') 
+	{
+		scanf("%c",&str[1]);
+		if (*strupr(str)!='Y')
+			return;
+	}
+	printf("\n ENTER THE NAME OF THE FILE FOR THE INFORMATION. THE DEFULT IS");
+	printf(" PrginfoTAKMILI.DAT \n");
+	scanf("%c",str);
+	
+	if (str[0]!='\n') 
+	{
+		scanf("%s",&str[1]);
+		strcpy(prginfo,str);
+		scanf("%c",&str[0]);
+	}*/
+	
+	/*if ((fp=fopen(prginfo,"w"))==NULL) 
+	{
+		printf(" UNABLE TO OPEN THE FILE FOR INFORMATION ");
+		return;
+	}*/
+
+	(fp=fopen(prginfo,"w"));
+
+	fprintf(fp,"\n  ********************************************************************************************");
+	fprintf(fp,"\n  ************************************ TAKMILI ALGORITHM *************************************\n");
+	
+	fprintf(fp,"\n  Time : %s    \t\t\t\t\t\t\t       date : %s",time, date);
+	
+	fprintf(fp,"\n\n  NUMBER OF NODES : %d ",NNODES);
+	fprintf(fp,"\n  NUMBER OF ARCS : %d ",NARCS);
+	fprintf(fp,"\n  NUMBER OF OD PARES : %d ",NODPRS);
+
+	fprintf(fp,"\n\n  The totaltime in second is %g ",PRGITRinfo->PRGtime);
+	
+	fprintf(fp," \n\n  MAX MEM FOR STRUCTS USED : %lu \n",PRGMEMinfo->MxStrcMem);
+	fprintf(fp,"  MAX MEM FOR ARCS USED : %lu \n\n",PRGMEMinfo->MxArcMem);
+	
+	fprintf(fp,"%s%lu \n","  TOTAL USED MEMORY FOR STRUCTS AT FINAL SOL'N: ",PRGMEMinfo->StrcMemFnl);
+	fprintf(fp,"%s%lu \n\n","  TOTAL USED MEMORY FOR ARCS AT FINAL SOL'N: ", PRGMEMinfo->ArcMemFnl);
+	
+	fprintf(fp,"%s%d \n", "  MAX NUMBER OF PATHS EVER USED : ",PRGMEMinfo->MxNPath);
+	fprintf(fp,"%s%d \n\n", "  MAX NUMBER OF ARCS PER PATH EVER USED : ",PRGMEMinfo->MxNArc);
+	
+	//fprintf(fp,"%s%d \n", "  MAX NUMBER OF PATHS AT FINAL SOL'N : ",PRGMEMinfo->MxNPathFnl);
+	//fprintf(fp,"%s%d \n\n", "  MAX NUMBER OF ARCS PER PATH AT FINAL SOL'N : ",PRGMEMinfo->MxNArcFnl);
+	
+	fprintf(fp,"%s%d \n", "  THE TOTAL NUMBER OF PATH (class 1) EVER GENERATED IS : ",PRGPTHinfo1->n_genPATH);
+	fprintf(fp,"%s%d \n\n", "  THE TOTAL NUMBER OF PATH (class 1) EVER USED IS : ",PRGPTHinfo1->n_usePATH);
+	fprintf(fp,"%s%d \n", "  THE TOTAL NUMBER OF PATH (class 2) EVER GENERATED IS : ",PRGPTHinfo2->n_genPATH);
+	fprintf(fp,"%s%d \n\n", "  THE TOTAL NUMBER OF PATH (class 2) EVER USED IS : ",PRGPTHinfo2->n_usePATH);
+
+	fprintf(fp,"%s%f \n", "  THE INITIAL EPSILON IS : ", INITEPSILON);
+	fprintf(fp,"%s%4.10f \n\n", "  THE FINAL EPSILON IS : ", FINLEPSILON);
+	
+	fprintf(fp,"%s%d \n\n", "  THE NUMBER OF CYCLES IS : ", PRGITRinfo->nCYCLE);
+	
+	fprintf(fp,"%s%d \n", "  THE TOTAL NUMBER OF NCP SOLVED IS : ",PRGITRinfo->nNCP);
+	fprintf(fp,"%s%d \n", "  THE TOTAL NUMBER OF LINEARIZATIONS IS : ",PRGITRinfo->nLCP);
+	fprintf(fp,"%s%d \n\n","  MAX NUM OF LCP PER OD: ",PRGITRinfo->maxnLCPod);
+
+	//fprintf(fp,"%s%d \n\n", "  LDIM IS : ", LDIM);
+	
+	fprintf(fp,"\n  ********************************************************************************************");
+	fprintf(fp,"\n  ************************* INFORMATION ACQUIRED AT EACH CYCLE *******************************\n");
+
+	fprintf(fp,"\n   CYCLE		   Eps			       TIME          nNCP     nLCP              ARG               ERROR_D           Tcost				Ttoll");
+
+	for ( I=0; I<=PRGITRinfo->nCYCLE; ++I)
+	{
+		if ( I==0 )
+			fprintf(fp,"\n %6d          --------    %16.3f       -----     -----   %16.6f    %16.6f   %16.0f    %16.0f", 
+			I,CYCLEinfo[I].CYCLEtime,CYCLEinfo[I].ARG, CYCLEinfo[I].ERRORD, CYCLEinfo[I].Tcost, CYCLEinfo[I].Ttoll/*,eCYCLE[I]*/);
+		else 
+			fprintf(fp,"\n %6d  %16.6f    %16.3f    %6d    %6d    %16.6f    %16.6f    %16.0f    %16.0f",I,CYCLEinfo[I].Eps,CYCLEinfo[I].CYCLEtime,
+			CYCLEinfo[I].nNCP, CYCLEinfo[I].nLCP, CYCLEinfo[I].ARG, CYCLEinfo[I].ERRORD, CYCLEinfo[I].Tcost,  CYCLEinfo[I].Ttoll/*,eCYCLE[I]*/ );
+	}
+	fprintf(fp,"\n\n%s%.3f  \n", "Average travel time:  ", avetraveltime);
+	fprintf(fp,"%s%.3f  \n", "Average Speed:  ", avesp);
+	fprintf(fp,"%s%.3f  \n", "class 1 total demand:  ", alldem1);
+	fprintf(fp,"\%s%.3f ", "class 2 total demand:  ", alldem2);
+	fprintf(fp,"\n\n  ***************************************** END **********************************************\n");
+
+	fclose(fp);
+	return;
+
+} /* SAVEPRGINFO */
+
+/*************************************************************************************/
