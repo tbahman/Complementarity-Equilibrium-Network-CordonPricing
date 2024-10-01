@@ -314,3 +314,32 @@ void SAVEPRGINFO ( CYCLEINFOSTRUCT CYCLEinfo[], const PRGITRINFOSTRC *PRGITRinfo
 } /* SAVEPRGINFO */
 
 /*************************************************************************************/
+/************************************* FREEMEMORY ************************************/
+
+void FREEMEMORY ( PATHPOINTER  *PATHstart, PRGMEMINFOSTRC *PRGMEMinfo )
+{
+	int
+		od,npath;
+	PATHPOINTER
+		oldpath, newpath;
+
+	for ( od=0; od<NODPRS; ++od ) 
+	{
+		oldpath = PATHstart[od];
+		npath=0;
+		while ( oldpath) 
+		{
+			++npath;
+			if ( oldpath->size > PRGMEMinfo->MxNArcFnl )
+				PRGMEMinfo->MxNArcFnl=oldpath->size;
+			newpath = oldpath -> next;
+			free ( oldpath -> ArcPntr );
+			free ( oldpath );
+			oldpath = newpath;
+		} /* while */
+		if ( npath>PRGMEMinfo->MxNPathFnl ) PRGMEMinfo->MxNPathFnl=npath;
+	} /* for od */
+	return;
+} /* FREEMEMORY */
+
+/*************************************************************************************/
