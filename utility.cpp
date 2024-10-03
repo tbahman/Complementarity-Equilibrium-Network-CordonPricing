@@ -343,3 +343,22 @@ void FREEMEMORY ( PATHPOINTER  *PATHstart, PRGMEMINFOSTRC *PRGMEMinfo )
 } /* FREEMEMORY */
 
 /*************************************************************************************/
+/************************************** FreeGlobalMem ********************************/
+
+void FreeGlobalMem( double *fa, double  *ta, double  *DEMAND )
+{
+	free(NPT);
+	free(BGNODE);
+	free(ENNODE);
+	free(A0);
+	free(A1);
+	free(DSTNODE);
+	free(ORGNODE);
+	free(DEMAND);
+	free(fa);
+	free(ta);
+
+	return;
+} /* FreeGlobalMem */
+
+/*************************************************************************************/
