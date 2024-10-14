@@ -15,3 +15,7 @@ int UPDATE_PATHS(PATHPOINTER *PATHstart, int od, double TP[], double fa[], doubl
 void LINEARIZE(int npath1, int npath2, double demand, PATHPOINTER PathStart1, PATHPOINTER PathStart2, double fa[], double TP[], double AM[][ MAXNUMPATH+1 ], double Q[], int od, double demandOne, double demandTwo);
 void UPDATE_hpfaTPErr(int npath1, int npath2, double Z1[], double Z2[], PATHPOINTER PathStart1, PATHPOINTER PathStart2, double fa1[], double fa2[], double TP1[], double TP2[], double *Err1, double *Err2, double& Tmin1, double& Tmin2);
 inline double CALCta(double *faFormal, int I, bool classno);
+inline void DERIVtafb(double *faFormal, int I, double &rslt, bool whichclass);
+double CALCTP(ARCPOINTER ArcPntr, int size, double fa[], bool classno);
+double DERIVTP(double fa[], PATHPOINTER path1, PATHPOINTER path2, bool classOfFlow);
+void binaryLogit(double DEMAND[], double urs1[], double urs2[], double DEMAND1[], double DEMAND2[]);
