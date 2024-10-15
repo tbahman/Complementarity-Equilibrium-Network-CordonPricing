@@ -19,3 +19,10 @@ inline void DERIVtafb(double *faFormal, int I, double &rslt, bool whichclass);
 double CALCTP(ARCPOINTER ArcPntr, int size, double fa[], bool classno);
 double DERIVTP(double fa[], PATHPOINTER path1, PATHPOINTER path2, bool classOfFlow);
 void binaryLogit(double DEMAND[], double urs1[], double urs2[], double DEMAND1[], double DEMAND2[]);
+double DerivativeDemand(double classDemand1, double classDemand2, double DEMAND[], int i, float ursCoefficient, bool classtype1, bool classtype2, double classDemand);
+double AverageSpeed(const double fa1[], const double fa2[], const vector<double> &dist, const vector<double> &isincordon, const double ta1[], bool allnet);
+double PathOdRG(PATHPOINTER PathStart, double fa[], double Tbell, double demand, double& tempTF, bool classno);
+double ExactAEC(PATHPOINTER PathStart, double fa[], double Tbell, double demand, bool classno);
+double PathOdError(PATHPOINTER PathStart, int npath, double fa[], double Tbell, double demand, bool classno);
+
+#endif
