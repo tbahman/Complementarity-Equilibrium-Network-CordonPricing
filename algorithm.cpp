@@ -64,3 +64,29 @@ void LCP(double AM[][ MAXNUMPATH+1 ], double Q[], int N, double Z[])
         W[IR] = 0.0;
         L1 = 1;
     } /* INITIA */
+   while (NL1 == 1 || NL1 == 2) {
+
+        /* NEWBAS (N); ************************************************** */
+        {
+            int I, J;
+            double T1;
+            switch (NL1) {
+            case 1:
+                NE1 = 2;
+                NE2 = NL2;
+                for (I = 1; I <= N; ++I) {
+                    T1 = 0.0;
+                    for (J = 1; J <= N; ++J) {
+                        T1 = T1 - BB[I][J] * AM[J - 1][NE2 - 1]; /* AM CHANGED!! */
+                    }
+                    AA[I] = T1;
+                }
+                break;
+            case 2:
+                NE1 = 1;
+                NE2 = NL2;
+                for (I = 1; I <= N; ++I) {
+                    AA[I] = BB[I][NE2];
+                }
+            } /* switch */
+        }  /* NEWBAS */
