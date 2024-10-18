@@ -90,3 +90,23 @@ void LCP(double AM[][ MAXNUMPATH+1 ], double Q[], int N, double Z[])
                 }
             } /* switch */
         }  /* NEWBAS */
+
+        /*  SORT (N); **************************************************** */
+        {
+            int I = 1;
+            double T1, T2;
+            for (I = 1; I <= N && AA[I] <= 1e-10; ++I);
+            if (I > N)
+                return;
+            T1 = Q[I] / AA[I];
+            IR = I;
+            for (I = I + 1; I <= N; ++I) {
+                if (AA[I] > 1e-10) {
+                    T2 = Q[I] / AA[I];
+                    if (T1 > T2) {
+                        IR = I;
+                        T1 = T2;
+                    }
+                }
+            }
+        } /* SORT */
