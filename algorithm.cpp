@@ -110,3 +110,27 @@ void LCP(double AM[][ MAXNUMPATH+1 ], double Q[], int N, double Z[])
                 }
             }
         } /* SORT */
+
+        /*  PIVOT (N); *********************************************** */
+        {
+            int I, J, L;
+            for (I = 1; I <= N; ++I) {
+                BB[IR][I] = BB[IR][I] / AA[IR];
+            }
+            Q[IR] = Q[IR] / AA[IR];
+            for (I = 1; I <= N; ++I) {
+                if (I == IR) continue;
+                Q[I] = Q[I] - Q[IR] * AA[I];
+                for (J = 1; J <= N; ++J) {
+                    BB[I][J] = BB[I][J] - BB[IR][J] * AA[I];
+                }
+            }
+            NL1 = MBASIS[IR];
+            L = N + IR;
+            NL2 = MBASIS[L];
+            MBASIS[IR] = NE1;
+            MBASIS[L] = NE2;
+            L1 = L1 + 1;
+        } /* PIVOT */
+
+    } /* while */
