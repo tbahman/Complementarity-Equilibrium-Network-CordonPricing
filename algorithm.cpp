@@ -134,3 +134,26 @@ void LCP(double AM[][ MAXNUMPATH+1 ], double Q[], int N, double Z[])
         } /* PIVOT */
 
     } /* while */
+   /*  PRINT(N); *************************************************** */
+    {
+        int I, III, J, K1, K2;
+        for (III = 1; III <= N; ++III) {
+            W[III] = 0.0;
+            Z[III] = 0.0;
+        }
+        I = N + 1;
+        for (J = 1; J <= N; ++J) {
+            K1 = MBASIS[I];
+            K2 = MBASIS[J];
+            if (Q[J] < 0.0)
+                Q[J] = 0.0;
+            else if (K2 != 1)
+                Z[K1] = Q[J];
+            else
+                W[K1] = Q[J];
+            ++I;
+        }
+    } /* PRINT */
+    free(MBASIS);
+    return;
+} /* LCP */
