@@ -157,3 +157,62 @@ void LCP(double AM[][ MAXNUMPATH+1 ], double Q[], int N, double Z[])
     free(MBASIS);
     return;
 } /* LCP */
+void BELL(double *DIST, int NORG, double D[], int *ARCB, int *LEVEL, int *PN, int *L)
+{
+    int *LF;
+    int I, J, K, MLA, NNA, JK, II, JJ, LEV;
+    double DD;
+
+    void ErrorAlloc(char str[]);
+
+    /* ****   FIRST SET DIST OF 0 ON SOURCE NODE NS */
+    if (!(LF = (int *)calloc(TOTALNODES + 1, sizeof(int))))
+        ErrorAlloc(" LF in BELL ");
+
+    for (J = 1; J <= NNODES; ++J) {
+        D[J] = MAXREALNUM;
+        PN[J] = 0;
+        LF[J] = 0;
+        LEVEL[J] = -1;
+    }
+
+    D[NORG] = 0.0;
+    L[1] = NORG;
+    MLA = 1;
+    /*  STEP 1 ******** */
+    for (K = 1; K <= MLA; ++K) {
+        I = L[K];
+        /* STEP 2 ********** */
+        if (NPT[I] == 0) {
+            LF[I] = 0;
+            continue;
+        }
+        if (I < NNODES) {
+            for (JK = I + 1; JK <= NNODES && NPT[JK] == 0; ++JK);
+            NNA = (JK > NNODES) ? (NARCS - NPT[I] + 1) : (NPT[JK] - NPT[I]);
+        }
+        else {
+            NNA = NARCS - NPT[I] + 1;
+        }
+        for (J = 1; J <= NNA; ++J) {
+            II = NPT[I] + J - 1;
+            /*  STEP 3 ******* */
+            DD = D[I] + DIST[II];
+            JJ = ENNODE[idx(II)];
+            if (DD < D[JJ]) {
+                D[JJ] = DD;
+                PN[JJ] = I;
+                ARCB[JJ] = II;
+                /* STEP 4 ****** */
+                if (LF[JJ] != 1) {
+                    ++MLA;
+                    L[MLA] = JJ;
+                    LF[JJ] = 1;
+                }
+            }
+        } /* for */
+        LF[I] = 0;
+
+    } /* for */
+
+    LEVEL[NORG] = 0;
