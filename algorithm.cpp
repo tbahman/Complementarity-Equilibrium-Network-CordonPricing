@@ -216,3 +216,21 @@ void BELL(double *DIST, int NORG, double D[], int *ARCB, int *LEVEL, int *PN, in
     } /* for */
 
     LEVEL[NORG] = 0;
+
+    for (I = 1; I <= NNODES; ++I) {
+        LEV = 0;
+        J = I;
+        while (PN[J] != 0) {
+            J = PN[J];
+            LEV = LEV + 1;
+        }
+        LEVEL[I] = LEV;
+    }
+
+    free(LF);
+
+    if (MLA > MAXMLA)
+        MAXMLA = MLA;
+
+    return;
+} /* BELL */
