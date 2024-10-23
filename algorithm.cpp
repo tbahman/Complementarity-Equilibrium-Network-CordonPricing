@@ -234,3 +234,19 @@ void BELL(double *DIST, int NORG, double D[], int *ARCB, int *LEVEL, int *PN, in
 
     return;
 } /* BELL */
+
+void CycleCost(int nCYCLE, const double *fa1, const double *ta1, const double *fa2, const double *ta2, CYCLEINFOSTRUCT CYCLEinfo[])
+{
+    CYCLEinfo[nCYCLE].Tcost = 0;
+    CYCLEinfo[nCYCLE].User = 0;
+    CYCLEinfo[nCYCLE].Ttoll = 0;
+
+    for (int I = 0; I < NARCS; ++I)
+    {
+        //CYCLEinfo[nCYCLE].Tcost +=ta[I]*fa[I];
+        CYCLEinfo[nCYCLE].Tcost += ((BGNODE[I] <= ZoneNumber || ENNODE[I] <= ZoneNumber) ? (ta1[I] - CCT) * fa1[I] : ta1[I] * fa1[I]);
+        CYCLEinfo[nCYCLE].Tcost += ((BGNODE[I] <= ZoneNumber || ENNODE[I] <= ZoneNumber) ? (ta2[I] - CCT) * fa2[I] : ta2[I] * fa2[I]);
+        CYCLEinfo[nCYCLE].Ttoll += (tau * fa1[I]) * tollRoad[I];
+
+        double faa;
+        double a0, a1, t, d;
