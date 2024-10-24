@@ -253,3 +253,29 @@ void CycleCost(int nCYCLE, const double *fa1, const double *ta1, const double *f
     }
 
 }/* CycleCost */
+
+double PathOdError(PATHPOINTER PathStart, int npath, double fa[], double Tbell, double demand, bool classno)
+{
+    double PathErr, TP, hp, error;
+    int p, size;
+    PATHPOINTER tempPath;
+    ARCPOINTER tempPntr;
+
+    void ErrorAlloc(char str[]);
+
+    error = 0;
+    tempPath = PathStart;
+
+    for (p = 0; p < npath; ++p)
+    {
+        size = tempPath->size;
+        tempPntr = tempPath->ArcPntr;
+        hp = tempPath->hp;
+        TP = CALCTP(tempPntr, size, fa, classno);
+        PathErr = (hp * fabs(TP - Tbell)) / (demand * TP);
+        error += PathErr;
+        tempPath = tempPath->next;
+    }  /* for path */ 
+
+    return (error);
+}  /* PathOdError */
