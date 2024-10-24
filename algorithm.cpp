@@ -250,3 +250,6 @@ void CycleCost(int nCYCLE, const double *fa1, const double *ta1, const double *f
 
         double faa;
         double a0, a1, t, d;
+    }
+
+}/* CycleCost */
