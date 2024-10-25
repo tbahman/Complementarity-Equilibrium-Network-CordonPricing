@@ -279,3 +279,29 @@ double PathOdError(PATHPOINTER PathStart, int npath, double fa[], double Tbell, 
 
     return (error);
 }  /* PathOdError */
+
+double RELGAP(PATHPOINTER PathStart, double fa[], double Tbell, double demand, bool classno)
+{
+    double PathGAP, CycleGAP, TP, hp;
+    int size;
+    PATHPOINTER tempPath;
+    ARCPOINTER tempPntr;
+
+    void ErrorAlloc(char str[]);
+
+    CycleGAP = 0;
+    tempPath = PathStart;
+    while (tempPath != NULL)
+    {
+        size = tempPath->size;
+        tempPntr = tempPath->ArcPntr;
+        hp = tempPath->hp;
+        TP = CALCTP(tempPntr, size, fa, classno);
+        PathGAP = hp * (TP - 2 * CCT);
+        CycleGAP += PathGAP;
+        tempPath = tempPath->next;
+    }  /* for path */ 
+
+    return (CycleGAP);
+
+}  /* RELGAP */
