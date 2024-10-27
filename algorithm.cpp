@@ -305,3 +305,73 @@ double RELGAP(PATHPOINTER PathStart, double fa[], double Tbell, double demand, b
     return (CycleGAP);
 
 }  /* RELGAP */
+
+void INITIALVALUE(PATHPOINTER *& PATHstart, double *& DEMAND, double*& fa, double *& ta, double TP[], CYCLEINFOSTRUCT CYCLEinfo[], PRGPATHINFOSTRC *&PRGPTHinfo)
+{
+    int od, I;
+    void ErrorAlloc(char str[]);
+
+    if (!(NPT = (int *)calloc(NNODES, sizeof(int))))
+        ErrorAlloc("NPT");
+    if (!(BGNODE = (int *)calloc(NARCS, sizeof(int))))
+        ErrorAlloc("BGNODE");
+    if (!(ENNODE = (int *)calloc(NARCS, sizeof(int))))
+        ErrorAlloc("ENNODE");
+    if (!(A0 = (double *)calloc(NARCS, sizeof(double))))
+        ErrorAlloc("A0");
+    if (!(A1 = (double *)calloc(NARCS, sizeof(double))))
+        ErrorAlloc("A1");
+    if (!(DSTNODE = (int *)calloc(NODPRS + 10, sizeof(int))))
+        ErrorAlloc("DSTNODE");
+    if (!(DSTNODE2 = (int *)calloc(NODPRS + 10, sizeof(int))))
+        ErrorAlloc("DSTNODE");
+    if (!(ORGNODE = (int *)calloc(NODPRS + 10, sizeof(int))))
+        ErrorAlloc("ORGNODE");
+    if (!(DEMAND = (double *)calloc(NODPRS, sizeof(double))))
+        ErrorAlloc("DEMAND");
+    if (!(fa = (double *)calloc(NARCS, sizeof(double))))
+        ErrorAlloc("fa");
+    if (!(ta = (double *)calloc(NARCS, sizeof(double))))
+        ErrorAlloc("ta");
+    if (!(PRGPTHinfo = (PRGPATHINFOSTRC *)calloc(NARCS, sizeof(PRGPATHINFOSTRC))))
+        ErrorAlloc("PRGPATHINFOSTRC");
+    if (!(PATHstart = (PATHPOINTER *)calloc(NODPRS, sizeof(PATHPOINTER))))
+        ErrorAlloc("PATHstart");
+
+    for (od = 0; od < NODPRS; ++od)
+    {
+        DEMAND[od] = 0;
+        PATHstart[od] = NULL;
+    }
+
+    for (I = 0; I < NARCS; ++I)
+    {
+        fa[I] = 0;
+        ta[I] = 0;
+    }
+
+    for (I = 0; I < MXNPATH; ++I)
+        TP[I] = 0;
+
+    for (I = 0; I <= MAXNCYCLE; ++I)
+    {
+        CYCLEinfo[I].nNCP = 0;
+        CYCLEinfo[I].nLCP = 0;
+        CYCLEinfo[I].Eps = 0;
+        CYCLEinfo[I].CYCLEtime = 0;
+    }
+
+    PRGPTHinfo->n_genPATH = 0;
+    PRGPTHinfo->n_usePATH = 0;
+
+    PRGMEMinfo.MxStrcMem = 0;
+    PRGMEMinfo.MxArcMem = 0;
+    PRGMEMinfo.StrcMemFnl = 0;
+    PRGMEMinfo.ArcMemFnl = 0;
+    PRGMEMinfo.MxNPath = 1;
+    PRGMEMinfo.MxNArc = 1;
+    PRGMEMinfo.MxNPathFnl = 1;
+    PRGMEMinfo.MxNArcFnl = 1;
+
+    return;
+} /* INITIALVALUE */
