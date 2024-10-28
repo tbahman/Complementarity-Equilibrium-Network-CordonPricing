@@ -375,3 +375,15 @@ void INITIALVALUE(PATHPOINTER *& PATHstart, double *& DEMAND, double*& fa, doubl
 
     return;
 } /* INITIALVALUE */
+void STARTPOINT(double *DEMAND, PATHPOINTER *PATHstart, double fa[], double *ta, PRGMEMINFOSTRC *PRGMEMinfo, PRGPATHINFOSTRC *PRGPTHinfo, bool classno)
+{
+    int od, org, PrvOrg, NODE, numofArcs;
+    int *ARCB, *NODB, *LEVEL, *L;
+    double *Tbell;
+    PATHPOINTER path = NULL;
+    ARCPOINTER ArcPntr, pntr;
+
+    void UPDATEta(double fa[], double *ta, bool classno);
+    void BELL(double *DIST, int NORG, double D[], int *ARCB, int *LEVEL, int *PN, int *L);
+    void ErrorAlloc(char str[]);
+    double CALCTP(ARCPOINTER ArcPntr, int size, double fa[], bool classno);
