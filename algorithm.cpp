@@ -387,3 +387,16 @@ void STARTPOINT(double *DEMAND, PATHPOINTER *PATHstart, double fa[], double *ta,
     void BELL(double *DIST, int NORG, double D[], int *ARCB, int *LEVEL, int *PN, int *L);
     void ErrorAlloc(char str[]);
     double CALCTP(ARCPOINTER ArcPntr, int size, double fa[], bool classno);
+
+    if (!(ARCB = (int *)calloc(NNODES, sizeof(int))))
+        ErrorAlloc("ARCB in STARTPOINT");
+    if (!(NODB = (int *)calloc(NNODES, sizeof(int))))
+        ErrorAlloc("NODB in STARTPOINT");
+    if (!(LEVEL = (int *)calloc(NNODES, sizeof(int))))
+        ErrorAlloc("LEVEL in STARTPOINT");
+    if (!(Tbell = (double *)calloc(NNODES, sizeof(double))))
+        ErrorAlloc("Tbell in STARTPOINT");
+    if (!(L = (int *)calloc(LDIM, sizeof(int))))
+        ErrorAlloc(" L in STARTPOINT ");
+
+   
