@@ -399,4 +399,54 @@ void STARTPOINT(double *DEMAND, PATHPOINTER *PATHstart, double fa[], double *ta,
     if (!(L = (int *)calloc(LDIM, sizeof(int))))
         ErrorAlloc(" L in STARTPOINT ");
 
+   UPDATEta(fa, ta, classno);
+    for (org = 0, od = 0; od < NODPRS; ++org)
+    {
+        BELL(ta - 1, ORGNODE[od], Tbell - 1, ARCB - 1, LEVEL - 1, NODB - 1, L);
+        PrvOrg = ORGNODE[od];
+        for (; (PrvOrg == ORGNODE[od]) && (od < NODPRS); ++od)
+        {
+            NODE = DSTNODE[od];
+            numofArcs = LEVEL[idx(NODE)];
+            double demand = DEMAND[od];
+            if (demand == 0)
+                continue;
+            if (!(path = (PATHPOINTER)malloc(sizeof(struct PATHSTRUCT))))
+                ErrorAlloc("STRUCTURES IN STARTPOINT");
+            if (!(ArcPntr = (ARCPOINTER)calloc(numofArcs, sizeof(int))))
+                ErrorAlloc("ARCS IN STARTPOINT");
+
+            pntr = ArcPntr + numofArcs - 1;
+            for (int I = numofArcs - 1; I >= 0; --I)
+            {
+                *pntr = ARCB[idx(NODE)];
+                fa[*pntr - 1] += demand;
+                NODE = NODB[idx(NODE)];
+                --pntr;
+            }
+            path->ArcPntr = ArcPntr;
+            path->size = numofArcs;
+            path->hp = demand;
+            path->next = NULL;
+            PATHstart[od] = path;
+
+            PRGPTHinfo->n_genPATH += 1;
+            PRGPTHinfo->n_usePATH += 1;
+
+            PRGMEMinfo->ArcMemFnl += intSize * numofArcs;
+            PRGMEMinfo->StrcMemFnl += structSize;
+            if (numofArcs > PRGMEMinfo->MxNArc)
+                PRGMEMinfo->MxNArc = numofArcs;
+            if (PRGMEMinfo->ArcMemFnl > PRGMEMinfo->MxArcMem)
+                PRGMEMinfo->MxArcMem = PRGMEMinfo->ArcMemFnl;
+            if (PRGMEMinfo->StrcMemFnl > PRGMEMinfo->MxStrcMem)
+                PRGMEMinfo->MxStrcMem = PRGMEMinfo->StrcMemFnl;
+
+        } /* for od */
+
+        UPDATEta(fa, ta, classno);
+
+    } /* for org */
+
+
    
