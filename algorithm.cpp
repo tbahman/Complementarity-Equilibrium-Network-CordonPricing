@@ -447,6 +447,16 @@ void STARTPOINT(double *DEMAND, PATHPOINTER *PATHstart, double fa[], double *ta,
         UPDATEta(fa, ta, classno);
 
     } /* for org */
+    
+    UPDATEta(fa, ta, classno);
+
+    free(ARCB);
+    free(NODB);
+    free(LEVEL);
+    free(Tbell);
+
+    return;
+} /* STARTPOINT */
 
 
    
