@@ -458,5 +458,25 @@ void STARTPOINT(double *DEMAND, PATHPOINTER *PATHstart, double fa[], double *ta,
     return;
 } /* STARTPOINT */
 
+int UPDATE_PATHS(PATHPOINTER *PATHstart, int od, double TP[], double fa[], double *Tmax, double *Tmin, double Tbell, int ARCB[], int NODB[], int numofArcs, PRGMEMINFOSTRC *PRGMEMinfo, PRGPATHINFOSTRC *PRGPTHinfo, double nRG, bool classno)
+{
+    double tempTP;
+    int I, npath, size, NODE;
+    PATHPOINTER temppath, newpath, oldpath;
+    ARCPOINTER ArcPntr, temppntr;
 
+    void ErrorAlloc(char str[]);
+
+    temppath = PATHstart[od];
+    while (temppath != NULL && temppath->hp < FLOWACCU)
+    {
+        size = temppath->size;
+        PRGMEMinfo->ArcMemFnl -= intSize * size;
+        PRGMEMinfo->StrcMemFnl -= structSize;
+        free(temppath->ArcPntr);
+        PATHstart[od] = temppath->next;
+        free(temppath);
+        --PRGPTHinfo->n_usePATH;
+        temppath = PATHstart[od];
+    } /* while */
    
