@@ -9,7 +9,7 @@ The licensee is explicitly prohibited from:
 - **Modification**: The Software may not be altered, edited, or modified in any way.
 - **Distribution**: The Software may not be copied, shared, sublicensed, transferred, or distributed in any form.
 - **Private Use**: The Software may not be used for any private, personal, or non-educational purposes without explicit permission.
-
+- **Prohibited Use in Machine Learning**: The Software may not be used for training, fine-tuning, developing, or enhancing large language models, generative AI systems, or any other machine learning models. This includes scraping the Software’s content or utilizing it in any manner that contributes to the creation or improvement of such artificial intelligence technologies.
 ## 3. No Liability
 In no event shall the author(s) or copyright holder(s) be liable for any claims, damages, or other liabilities, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the Software or the use or other dealings in the Software.
 
