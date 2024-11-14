@@ -480,3 +480,36 @@ int UPDATE_PATHS(PATHPOINTER *PATHstart, int od, double TP[], double fa[], doubl
         temppath = PATHstart[od];
     } /* while */
    
+    *Tmax = 0;
+    *Tmin = MAXREALNUM;
+    npath = 0;
+    oldpath = temppath;
+    newpath = oldpath;
+    while (newpath)
+    {
+        if (newpath->hp < FLOWACCU) {
+            size = newpath->size;
+            PRGMEMinfo->ArcMemFnl -= intSize * size;
+            PRGMEMinfo->StrcMemFnl -= structSize;
+            oldpath->next = newpath->next;
+            --PRGPTHinfo->n_usePATH;
+            free(newpath->ArcPntr);
+            free(newpath);
+        } /* if */
+        else {
+            ++npath;
+            oldpath = newpath;
+            TP[npath - 1] = (tempTP = CALCTP(newpath->ArcPntr, newpath->size, fa, classno));
+            if (*Tmax < tempTP)
+            {
+                *Tmax = tempTP;
+            }
+            if (*Tmin > tempTP)
+            {
+                *Tmin = tempTP;
+            }
+
+        } /* else */
+        newpath = oldpath->next;
+    } /* while */
+
