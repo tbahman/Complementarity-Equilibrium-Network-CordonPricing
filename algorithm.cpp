@@ -513,3 +513,12 @@ int UPDATE_PATHS(PATHPOINTER *PATHstart, int od, double TP[], double fa[], doubl
         newpath = oldpath->next;
     } /* while */
 
+    if (((*Tmin - Tbell) / (Tbell - 2 * CCT)) > (nRG))
+    {
+        if (!(newpath = (PATHPOINTER)malloc(sizeof(struct PATHSTRUCT))))
+            ErrorAlloc("STRUCTURES IN UPDATE_PATH");
+        if (!(ArcPntr = (ARCPOINTER)calloc(numofArcs, sizeof(int))))
+            ErrorAlloc("ARCS IN UPDATE_PATH");
+        tempTP = 0;
+        NODE = DSTNODE[od];
+        temppntr = ArcPntr + numofArcs - 1;
