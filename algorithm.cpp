@@ -522,3 +522,10 @@ int UPDATE_PATHS(PATHPOINTER *PATHstart, int od, double TP[], double fa[], doubl
         tempTP = 0;
         NODE = DSTNODE[od];
         temppntr = ArcPntr + numofArcs - 1;
+        for (int I = numofArcs - 1; I >= 0; --I, --temppntr)
+        {
+            *temppntr = ARCB[idx(NODE)];
+            tempTP += CALCta(fa, *temppntr - 1, classno);
+            NODE = NODB[idx(NODE)];
+        } /* for I */
+
