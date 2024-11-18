@@ -529,3 +529,41 @@ int UPDATE_PATHS(PATHPOINTER *PATHstart, int od, double TP[], double fa[], doubl
             NODE = NODB[idx(NODE)];
         } /* for I */
 
+        if (((*Tmin - tempTP) / (tempTP - 2 * CCT)) > (nRG))
+        {
+            ++npath;
+            oldpath->ArcPntr = ArcPntr;
+            oldpath->size = numofArcs;
+            oldpath->hp = 0;
+            oldpath->next = NULL;
+            ++PRGPTHinfo->n_usePATH;
+            ++PRGPTHinfo->n_genPATH;
+            PRGMEMinfo->ArcMemFnl += intSize * numofArcs;
+            PRGMEMinfo->StrcMemFnl += structSize;
+            if (numofArcs > PRGMEMinfo->MxNArc)
+                PRGMEMinfo->MxNArc = numofArcs;
+            if (PRGMEMinfo->ArcMemFnl > PRGMEMinfo->MxArcMem)
+                PRGMEMinfo->MxArcMem = PRGMEMinfo->ArcMemFnl;
+            if (PRGMEMinfo->StrcMemFnl > PRGMEMinfo->MxStrcMem)
+                PRGMEMinfo->MxStrcMem = PRGMEMinfo->StrcMemFnl;
+            if (npath > PRGMEMinfo->MxNPath)
+                PRGMEMinfo->MxNPath = npath;
+
+            if (oldpath)
+                oldpath->next = newpath;
+            else
+                PATHstart[od] = newpath;
+
+            TP[npath - 1] = tempTP;
+            *Tmin = tempTP;
+        } /* if */
+        else
+        {
+            free(ArcPntr);
+            free(oldpath);
+        } /* else */
+
+    } /* if */
+
+    return (npath);
+} /* UPDATE_PATHS */
