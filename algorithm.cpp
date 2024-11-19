@@ -567,3 +567,25 @@ int UPDATE_PATHS(PATHPOINTER *PATHstart, int od, double TP[], double fa[], doubl
 
     return (npath);
 } /* UPDATE_PATHS */
+
+void LINEARIZE(int npath1, int npath2, double demand, PATHPOINTER PathStart1, PATHPOINTER PathStart2, double fa[], double TP[], double AM[][ MAXNUMPATH+1 ], double Q[], int od, double demandOne, double demandTwo)
+{
+    int p1, p2, matrixLinker, npath;
+    double temp, DRV, derDem11, derDem12, derDem21, derDem22;
+    PATHPOINTER path1, path2;
+    ARCPOINTER ArcPntr1, ArcPntr2;
+
+    double DERIVTP(double fa[], PATHPOINTER path1, PATHPOINTER path2, bool classOfFlow);
+
+    if (classNo == 1)
+    {
+        path1 = PathStart1;
+        npath = npath1;
+        matrixLinker = 0;
+    }
+    else
+    {
+        path1 = PathStart2;
+        npath = npath2;
+        matrixLinker = npath1;
+    }
