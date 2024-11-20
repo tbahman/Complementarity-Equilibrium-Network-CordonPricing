@@ -589,3 +589,16 @@ void LINEARIZE(int npath1, int npath2, double demand, PATHPOINTER PathStart1, PA
         npath = npath2;
         matrixLinker = npath1;
     }
+
+
+    for (p1 = 0; p1 < npath; ++p1)
+    {
+        temp = 0;
+        path2 = PathStart1;
+        for (p2 = 0; p2 < npath1; ++p2)
+        {
+            DRV = DERIVTP(fa, path1, path2, 1);
+            temp -= (path2->hp)*DRV;
+            AM[p1 + matrixLinker][p2] = DRV;
+            path2 = path2->next;
+        } /* for p2 */
